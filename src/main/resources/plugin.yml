@@ -1,0 +1,5 @@
+name: Linguin
+version: ${project.version}
+main: de.mcmdev.linguin.Linguin
+authors: [ MCMDEV ]
+description: A minecraft localization framework
