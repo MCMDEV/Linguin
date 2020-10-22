@@ -7,6 +7,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class LanguageManager {
 
@@ -14,6 +17,7 @@ public class LanguageManager {
     private final File languageFolder;
     private final IAssetDownloader assetDownloader;
     private final LanguageLoader languageLoader;
+    private final Map<UUID, String> locales = new HashMap<>();
 
     public LanguageManager(JavaPlugin plugin) {
         this.plugin = plugin;
@@ -23,8 +27,16 @@ public class LanguageManager {
         this.languageLoader = new LanguageLoader(languageFolder);
     }
 
+    public void setLocale(Player player, String locale) {
+        this.locales.put(player.getUniqueId(), locale);
+    }
+
+    public String getLocale(Player player)  {
+        return locales.computeIfAbsent(player.getUniqueId(), uuid -> "en_us");
+    }
+
     public void join(Player player) {
-        String locale = transformLocale(player.getLocale());
+        String locale = transformLocale(getLocale(player));
         assetDownloader.upgrade(locale);
     }
 
@@ -33,13 +45,7 @@ public class LanguageManager {
     }
 
     private File createLanguageFolder()    {
-        File file = new File(plugin.getDataFolder() + "/lang");
-        boolean success = file.mkdirs();
-
-        if(!success)    {
-            throw new IllegalStateException("Language folder could not be created.");
-        }
-        return file;
+        return new File(plugin.getDataFolder() + "/lang");
     }
 
     public String transformLocale(String locale)   {

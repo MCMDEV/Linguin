@@ -2,6 +2,7 @@ package de.mcmdev.linguin.api;
 
 import de.mcmdev.linguin.manager.LanguageManager;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
@@ -59,6 +60,17 @@ public class LinguinAPI {
     }
 
     /**
+     * Gets a localized enchantment name based on an enchantment
+     *
+     * @param locale The locale key to be used
+     * @param enchantment The enchantment of which the name should be localized
+     * @return The localized enchantment name
+     */
+    public String getEnchantmentEntry(String locale, Enchantment enchantment)  {
+        return getEntry(locale, "enchantment.minecraft." + enchantment.getName().toLowerCase());
+    }
+
+    /**
      * Gets a raw localized entry based on a key and player
      *
      * @param player The player whose language should be used
@@ -66,7 +78,7 @@ public class LinguinAPI {
      * @return The localized value
      */
     public String getEntry(Player player, String key)   {
-        return getEntry(player.getLocale(), key);
+        return getEntry(languageManager.getLocale(player), key);
     }
 
     /**
@@ -77,7 +89,7 @@ public class LinguinAPI {
      * @return The localized item name
      */
     public String getItemEntry(Player player, Material material)    {
-        return getItemEntry(player.getLocale(), material);
+        return getItemEntry(languageManager.getLocale(player), material);
     }
 
     /**
@@ -88,7 +100,7 @@ public class LinguinAPI {
      * @return The localized entity name
      */
     public String getEntityEntry(Player player, EntityType entityType)  {
-        return getEntityEntry(player.getLocale(), entityType);
+        return getEntityEntry(languageManager.getLocale(player), entityType);
     }
 
     /**
@@ -99,6 +111,17 @@ public class LinguinAPI {
      * @return The localized potion effect name
      */
     public String getEffectEntry(Player player, PotionEffectType potionEffectType)  {
-        return getEffectEntry(player.getLocale(), potionEffectType);
+        return getEffectEntry(languageManager.getLocale(player), potionEffectType);
+    }
+
+    /**
+     * Gets a localized enchantment name based on an enchantment and player
+     *
+     * @param player The player whose language should be used
+     * @param enchantment The enchantment of which the name should be localized
+     * @return The localized enchantment name
+     */
+    public String getEnchantmentEntry(Player player, Enchantment enchantment)   {
+        return getEnchantmentEntry(languageManager.getLocale(player), enchantment);
     }
 }
